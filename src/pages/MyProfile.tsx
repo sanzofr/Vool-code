@@ -6,32 +6,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LogOut, User, Mail, Phone, Save, Heart, Image, Video } from "lucide-react";
+import { LogOut, User, Mail, Phone, Save, Heart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import ClientMobileNav from "@/components/ClientMobileNav";
 import AvatarUpload from "@/components/AvatarUpload";
-import ClientMediaUploadSelf from "@/components/ClientMediaUploadSelf";
-import ClientMediaCard from "@/components/ClientMediaCard";
 import logo from "@/assets/logo.jpg";
 import "@/styles/app.css";
-
-interface Coach {
-  coach_id: string;
-  first_name: string;
-  last_name: string;
-}
-
-interface ClientMedia {
-  id: string;
-  title: string;
-  description: string | null;
-  file_path: string;
-  media_type: string;
-  coach_review: string | null;
-  review_date: string | null;
-  created_at: string;
-}
 
 const MyProfile = () => {
   const { user } = useUserRole();
@@ -39,8 +20,6 @@ const MyProfile = () => {
   const { toast } = useToast();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [coaches, setCoaches] = useState<Coach[]>([]);
-  const [media, setMedia] = useState<ClientMedia[]>([]);
   
   const [profile, setProfile] = useState({
     first_name: "",
@@ -76,41 +55,6 @@ const MyProfile = () => {
         sport_specialty: profileData.sport_specialty || "",
         avatar_url: profileData.avatar_url || null
       });
-    }
-
-    // Fetch connected coaches
-    const { data: relationships } = await supabase
-      .from("coach_client_relationships")
-      .select("coach_id")
-      .eq("client_id", user?.id)
-      .eq("status", "active");
-
-    if (relationships && relationships.length > 0) {
-      const coachIds = relationships.map(r => r.coach_id);
-      const { data: coachProfiles } = await supabase
-        .from("profiles")
-        .select("id, first_name, last_name")
-        .in("id", coachIds);
-
-      if (coachProfiles) {
-        setCoaches(coachProfiles.map(c => ({
-          coach_id: c.id,
-          first_name: c.first_name,
-          last_name: c.last_name
-        })));
-      }
-    }
-
-    // Fetch client's own media
-    const { data: mediaData } = await supabase
-      .from("client_media")
-      .select("*")
-      .eq("client_id", user?.id)
-      .eq("uploaded_by", "client")
-      .order("created_at", { ascending: false });
-
-    if (mediaData) {
-      setMedia(mediaData);
     }
 
     setLoading(false);
@@ -207,9 +151,8 @@ const MyProfile = () => {
         </section>
 
         <Tabs defaultValue="profile" className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
+          <TabsList className="grid w-full grid-cols-1">
             <TabsTrigger value="profile">Profile</TabsTrigger>
-            <TabsTrigger value="media">My Media</TabsTrigger>
           </TabsList>
 
           <TabsContent value="profile" className="space-y-4 mt-4">
@@ -298,34 +241,6 @@ const MyProfile = () => {
                 {saving ? "Saving..." : "Save Changes"}
               </Button>
             </section>
-          </TabsContent>
-
-          <TabsContent value="media" className="space-y-4 mt-4">
-            {coaches.length > 0 ? (
-              <ClientMediaUploadSelf coaches={coaches} onUploadComplete={fetchData} />
-            ) : (
-              <Card className="p-4">
-                <p className="text-sm text-muted-foreground text-center">
-                  Connect with a coach to upload media for review
-                </p>
-              </Card>
-            )}
-
-            {media.length === 0 ? (
-              <Card className="empty-state">
-                <div className="flex justify-center gap-2 mb-3">
-                  <Image className="empty-state__icon" />
-                  <Video className="empty-state__icon" />
-                </div>
-                <p className="empty-state__text">No media uploaded yet</p>
-              </Card>
-            ) : (
-              <div className="grid grid-cols-2 gap-3">
-                {media.map((item) => (
-                  <ClientMediaCard key={item.id} media={item} onUpdate={fetchData} />
-                ))}
-              </div>
-            )}
           </TabsContent>
         </Tabs>
       </main>
