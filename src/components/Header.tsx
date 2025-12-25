@@ -1,4 +1,4 @@
-import { LogOut, Home, Users, Calendar, Settings, DollarSign, Inbox } from "lucide-react";
+import { LogOut, Home, Users, Calendar, Settings, DollarSign, Inbox, Bot } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
@@ -27,6 +27,7 @@ const Header = () => {
     { to: "/bookings", icon: Inbox, label: "Bookings" },
     { to: "/pricing", icon: DollarSign, label: "Pricing" },
     { to: "/settings", icon: Settings, label: "Settings" },
+    { to: "/vool-ai", icon: Bot, label: "AI Assistant" },
   ];
 
   return (

@@ -1,4 +1,4 @@
-import { Home, Users, Calendar, DollarSign, MessageCircle, Settings } from "lucide-react";
+import { Home, Users, Calendar, DollarSign, MessageCircle, Settings, Bot } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 
 const MobileNav = () => {
@@ -7,6 +7,7 @@ const MobileNav = () => {
     { to: "/clients", icon: Users, label: "Clients" },
     { to: "/schedule", icon: Calendar, label: "Schedule" },
     { to: "/messages", icon: MessageCircle, label: "Messages" },
+    { to: "/vool-ai", icon: Bot, label: "Vool Ai" },
     { to: "/settings", icon: Settings, label: "Settings" },
   ];
 

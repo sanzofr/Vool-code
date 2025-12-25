@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Users, Calendar, DollarSign, TrendingUp } from "lucide-react";
+import { Users, Calendar, DollarSign, TrendingUp, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import StatCard from "@/components/StatCard";
 import Header from "@/components/Header";
@@ -122,8 +122,8 @@ const Dashboard = () => {
           />
         </div>
 
-        <div className="dashboard__actions">
-          <Button 
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+           <Button 
             className="action-button"
             onClick={() => navigate("/clients")}
           >
@@ -137,6 +137,14 @@ const Dashboard = () => {
           >
             <Calendar className="action-button__icon" />
             <span>View Schedule</span>
+          </Button>
+           <Button 
+            variant="secondary" 
+            className="action-button"
+            onClick={() => navigate("/vool-ai")}
+          >
+            <Sparkles className="action-button__icon" />
+            <span>Vool AI</span>
           </Button>
         </div>
 

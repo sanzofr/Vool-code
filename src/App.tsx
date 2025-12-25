@@ -21,6 +21,7 @@ import MyProfile from "./pages/MyProfile";
 import Pricing from "./pages/Pricing";
 import BookingManagement from "./pages/BookingManagement";
 import Messages from "./pages/Messages";
+import VoolAIAssistant from "./pages/VoolAIAssistant";
 
 const queryClient = new QueryClient();
 
@@ -63,6 +64,11 @@ const App = () => (
           <Route path="/bookings" element={
             <ProtectedRoute allowedRoles={["coach", "admin"]}>
               <BookingManagement />
+            </ProtectedRoute>
+          } />
+           <Route path="/vool-ai" element={
+            <ProtectedRoute allowedRoles={["coach", "admin"]}>
+              <VoolAIAssistant />
             </ProtectedRoute>
           } />
           <Route path="/messages" element={
