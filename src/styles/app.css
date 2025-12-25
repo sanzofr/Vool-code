@@ -1661,6 +1661,8 @@ input.with-icon {
 .client-portal__session-card {
   background: linear-gradient(135deg, var(--color-primary), hsl(16, 85%, 48%));
   border: none;
+  display: flex;
+  align-items: center;
   border-radius: var(--radius-lg);
   overflow: hidden;
 }
